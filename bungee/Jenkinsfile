@@ -1,0 +1,11 @@
+pipeline {
+    stages {
+        stage('Clone') {
+            checkout scm
+        }
+        stage('Build Application') {
+            def customImage = docker.build("constellation-bungee": $ { env.BRANCH_NAME })
+    
+        }
+    }
+}

@@ -1,0 +1,4 @@
+name: Constellation-Bungee
+main: dev.feldmann.constellation.bungee.ConstellationBungee
+version: 1.0
+author: feldmann.dev

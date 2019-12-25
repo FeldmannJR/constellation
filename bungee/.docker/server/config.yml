@@ -1,0 +1,35 @@
+connection_throttle_limit: 3
+online_mode: true
+log_commands: false
+network_compression_threshold: 256
+listeners:
+- query_port: 25565
+  motd: '&bConstellation Bungeecord'
+  tab_list: GLOBAL_PING
+  query_enabled: false
+  proxy_protocol: false
+  forced_hosts:
+  ping_passthrough: false
+  priorities:
+  bind_local_address: true
+  host: 0.0.0.0:25565
+  max_players: 1
+  tab_size: 60
+  force_default_server: false
+connection_throttle: 4000
+groups:
+  Feldmann:
+  - admin
+log_pings: true
+ip_forward: true
+prevent_proxy_connections: false
+forge_support: false
+stats: 662922af-7cc2-474d-83d5-857ab20d39d3
+inject_commands: false
+disabled_commands:
+timeout: 30000
+permissions:
+  default:
+  admin:
+servers:
+player_limit: -1

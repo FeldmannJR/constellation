@@ -1,0 +1,6 @@
+.gitignore/
+*.iml
+.idea/
+target/
+Jenkinsfile
+.git/

@@ -1,0 +1,3 @@
+FROM bitnami/mariadb:latest
+
+
