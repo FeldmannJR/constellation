@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      containers:
+      - name: nexus
+        image: sonatype/nexus3
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        ports:
+          - name: http-port
+            containerPort: 8081
+        volumeMounts:
+          - mountPath: /nexus-data
+            name: nexus-storage
+      volumes:
+        - name: nexus-storage
+          persistentVolumeClaim:
+            claimName: nexus-pv-claim
+
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexus
+spec:
+  type: ClusterIP
+  selector:
+    app: nexus
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8081
+--- 
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nexus-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 1g
+spec:
+  rules:
+    - host: nexus.minikube
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: nexus       
+              servicePort: http

@@ -1,24 +1,8 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jenkins-pv-claim
-  labels:
-    app: jenkins
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
-  selector:
-    matchLabels:
-      app: jenkins
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jenkins-deployment
+  namespace: jenkins
 spec:
   replicas: 1
   selector:
@@ -29,9 +13,11 @@ spec:
       labels:
         app: jenkins-master
     spec:
+      serviceAccountName: jenkins
       containers:
       - name: jenkins
-        image: constellation/jenkins-master:1.0
+        image: constellation/jenkins-master
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "512Mi"
@@ -59,6 +45,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: jenkins-master
+  namespace: jenkins
 spec:
   type: ClusterIP
   selector:
@@ -75,6 +62,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: jenkins-ingress
+  namespace: jenkins
 spec:
   rules:
     - host: jenkins.minikube
@@ -83,4 +71,4 @@ spec:
           - path: /
             backend:
               serviceName: jenkins-master       
-              servicePort: 8080
+              servicePort: http
