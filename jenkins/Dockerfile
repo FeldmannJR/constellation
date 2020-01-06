@@ -1,24 +1,20 @@
 FROM jenkins/jenkins:lts
 RUN /usr/local/bin/install-plugins.sh git
-# Distributed Builds plugins
+
+RUN /usr/local/bin/install-plugins.sh configuration-as-code
+
 RUN /usr/local/bin/install-plugins.sh ssh-slaves
 
-# install Notifications and Publishing plugins
 RUN /usr/local/bin/install-plugins.sh email-ext
-RUN /usr/local/bin/install-plugins.sh mailer
-RUN /usr/local/bin/install-plugins.sh slack
 
-# Artifacts
-RUN /usr/local/bin/install-plugins.sh htmlpublisher
-
-# UI
-RUN /usr/local/bin/install-plugins.sh greenballs
-RUN /usr/local/bin/install-plugins.sh simple-theme-plugin
-
+RUN /usr/local/bin/install-plugins.sh blueocean
 # Scaling
 RUN /usr/local/bin/install-plugins.sh kubernetes
+# Dependencies of JCASC
+RUN /usr/local/bin/install-plugins.sh job-dsl workflow-job  workflow-aggregator workflow-cps
 
-# install Maven
-USER root
-RUN apt-get update && apt-get install -y maven
+COPY .docker/jenkins-config.yaml /cfg/jenkins.yaml
+
+ENV CASC_JENKINS_CONFIG /cfg/jenkins.yaml
+
 USER jenkins

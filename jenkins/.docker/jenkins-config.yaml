@@ -1,0 +1,52 @@
+jenkins:
+  numExecutors: 0
+  clouds:
+  - kubernetes:
+      name: 'kubernetes'
+      containerCapStr: "10"
+      skipTlsVerify: true
+      namespace: "jenkins"
+      jenkinsUrl: "http://jenkins-master.jenkins.svc.cluster.local"
+      maxRequestsPerHostStr: "32"
+      name: "kubernetes"
+      templates:
+      - containers:
+        - args: "cat"
+          command: "/bin/sh -c"
+          image: "jenkins/jnlp-slave"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
+          name: "jnlp-slave"
+          ttyEnabled: true
+          workingDir: "/home/jenkins/agent"
+        hostNetwork: false
+        name: "jenkins-slave"
+        namespace: "jenkins"
+        nodeUsageMode: "NORMAL"
+        yamlMergeStrategy: "override"
+jobs:
+  - script: >
+      for(it in ['constellation-common']) {
+          /*why am i concatenating strings like that? because the plugin is replacing the variables before processing the groovy script, so i'm unable to just use string interpolation pos*/
+          def repoURL = 'https://github.com/FeldmannJR/'
+          repoURL = repoURL.concat(it)
+          repoURL = repoURL.concat('.git');
+          pipelineJob(it) {
+              definition {
+                  cpsScm {
+                      scriptPath 'Jenkinsfile'
+                      scm {
+                        git {
+                            remote { url repoURL }
+                            branch '*/master'
+                            extensions {}
+                        }
+                      }
+                  }
+              }
+          }
+      }

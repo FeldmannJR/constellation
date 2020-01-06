@@ -16,12 +16,8 @@ spec:
       serviceAccountName: jenkins
       containers:
       - name: jenkins
-        image: constellation/jenkins-master
-        imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        image: localhost:5000/constellation/jenkins-master
+        imagePullPolicy: Always
         env:
           - name: JAVA_OPTS
             value: -Djenkins.install.runSetupWizard=false
