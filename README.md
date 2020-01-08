@@ -10,7 +10,7 @@ In a minecraft network you have multiple services depending in each other, and s
 Due to the complexity of a minecraft network, and the need for scalability, K8s is the perfect solution for this problem.  
 So i want to combine the business with pleasure, and start to learning K8s to resolve this problem. My intend is to arquitect cluster to handle at the same time, Minecraft server instances, Web APIs, databases, caches, proxies, CI/CD, Repositories, and others.
 ## Want to help ?
-Send a mail to For this project i am@gmail.com
+Send a mail to feldmannjunior@gmail.com
 
 ## Configuration
 
