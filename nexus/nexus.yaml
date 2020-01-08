@@ -1,8 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: nexus-deployment
+  name: nexus
 spec:
+  clusterIP: None
+  selector:
+    app: nexus
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8081
+--- 
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nexus
+spec:
+  serviceName: 'nexus'
   replicas: 1
   selector:
     matchLabels:
@@ -25,24 +39,15 @@ spec:
         volumeMounts:
           - mountPath: /nexus-data
             name: nexus-storage
-      volumes:
-        - name: nexus-storage
-          persistentVolumeClaim:
-            claimName: nexus-pv-claim
+  volumeClaimTemplates:
+  - metadata:
+      name: nexus-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
 
---- 
-apiVersion: v1
-kind: Service
-metadata:
-  name: nexus
-spec:
-  type: ClusterIP
-  selector:
-    app: nexus
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8081
 --- 
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
