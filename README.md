@@ -34,12 +34,16 @@ More information can be found [here](https://minikube.sigs.k8s.io/docs/tasks/doc
 
 ## Components
 
-### jenkins/
+### CI
+```shell
+# You can create the resources with
+cd /ci
+kubectl apply -k .
+```
+#### ci/jenkins/
 I am using the jenkins kubernetes plugins, when a job is dispatched the plugin create automatically a pod to run it.   
 The configuration is done through the Configuration as Code Plugin
-#### Start
-```
-cd jenkins
-kubectl create -f jenkins
-```
-### nexus/
+#### ci/nexus/
+Maven repository to store artifacts, the configuration is done automatically through groovy scripts.  
+Using my own nexus3 image, that can be found [HERE](https://github.com/FeldmannJR/nexus3-docker-image).
+
