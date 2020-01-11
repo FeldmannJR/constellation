@@ -1,15 +1,18 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: nexus
 spec:
-  clusterIP: None
+  type: ClusterIP
   selector:
     app: nexus
   ports:
   - name: http
     port: 80
     targetPort: 8081
+  - name: docker
+    port:  8123
 --- 
 apiVersion: apps/v1
 kind: StatefulSet
@@ -28,17 +31,39 @@ spec:
     spec:
       containers:
       - name: nexus
-        image: sonatype/nexus3
+        image: feldmannjr/nexus3:latest
         resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
           limits:
-            memory: "1Gi"
+            memory: "2Gi"
             cpu: "1"
+        env:
+          - name: NEXUS_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: nexus-secrets
+                key: admin-password
+          - name: NEXUS_DEPLOYER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: nexus-secrets
+                key: deployer-password
         ports:
           - name: http-port
             containerPort: 8081
+          - name: docker-port
+            containerPort: 8123
         volumeMounts:
           - mountPath: /nexus-data
             name: nexus-storage
+          - mountPath: /etc/nexus-init.d/
+            name: initialize-volume
+      volumes:
+        - name: initialize-volume
+          configMap:
+              name: 'nexus-initialize-scripts-config'
   volumeClaimTemplates:
   - metadata:
       name: nexus-storage
@@ -60,7 +85,14 @@ spec:
     - host: nexus.minikube
       http:
         paths:
-          - path: /
-            backend:
+          - backend:
               serviceName: nexus       
               servicePort: http
+            path: /
+    - host: docker.nexus.minikube
+      http:
+        paths:
+            - backend:
+                serviceName: nexus       
+                servicePort: docker
+              path: /

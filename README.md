@@ -35,4 +35,11 @@ More information can be found [here](https://minikube.sigs.k8s.io/docs/tasks/doc
 ## Components
 
 ### jenkins/
-I am using the jenkins kubernetes plugins, when a job is dispatched the plugin create automatically a pod to run it.
+I am using the jenkins kubernetes plugins, when a job is dispatched the plugin create automatically a pod to run it.   
+The configuration is done through the Configuration as Code Plugin
+#### Start
+```
+cd jenkins
+kubectl create -f jenkins
+```
+### nexus/

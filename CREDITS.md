@@ -6,4 +6,5 @@
 * https://medium.com/vivid-seats-engineering/how-to-kubernetes-pods-as-jenkins-build-agents-a726d3886861
 ## Nexus
 * https://blog.sonatype.com/automated-setup-of-a-repository-manager
+* https://www.edc4it.com/blog/java/minikube-nexus-statefulset-ingress
 # Stackoverflow

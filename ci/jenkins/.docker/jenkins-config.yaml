@@ -5,28 +5,30 @@ jenkins:
       name: 'kubernetes'
       containerCapStr: "10"
       skipTlsVerify: true
-      namespace: "jenkins"
-      jenkinsUrl: "http://jenkins-master.jenkins.svc.cluster.local"
+      namespace: "ci"
+      jenkinsUrl: "http://jenkins-master.ci.svc.cluster.local"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
       templates:
-      - containers:
-        - args: "cat"
-          command: "/bin/sh -c"
-          image: "jenkins/jnlp-slave"
-          livenessProbe:
-            failureThreshold: 0
-            initialDelaySeconds: 0
-            periodSeconds: 0
-            successThreshold: 0
-            timeoutSeconds: 0
-          name: "jnlp-slave"
-          ttyEnabled: true
-          workingDir: "/home/jenkins/agent"
-        hostNetwork: false
-        name: "jenkins-slave"
-        namespace: "jenkins"
-        nodeUsageMode: "NORMAL"
+      - hostNetwork: false
+        name: "mavenTemplate"
+        namespace: "ci"
+        yaml: |-
+          apiVersion: v1
+          kind: Pod
+          spec:
+            containers:
+              - name: maven
+                image: maven:3.3.9-jdk-8-alpine
+                command: ['cat']
+                tty: true
+                volumeMounts:
+                  - mountPath: /root/.m2/repository
+                    name: maven-cache-storage
+            volumes:
+                - name: maven-cache-storage
+                  persistentVolumeClaim:
+                    claimName: maven-cache-pv-claim
         yamlMergeStrategy: "override"
 jobs:
   - script: >

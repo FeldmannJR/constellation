@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ci
+resources:
+  - nexus/statefulset.yaml
+  - jenkins/maven-cache-pvc.yaml
+  - jenkins/service-account.yaml
+  - jenkins/statefulset.yaml
+configMapGenerator:
+  - name: 'nexus-initialize-scripts-config'
+    files:
+      - nexus/initialize/src/main/groovy/repositories.groovy
+      - nexus/initialize/src/main/groovy/security.groovy
+secretGenerator:
+  - name: nexus-secrets
+    literals: 
+      - deployer-password=j9uj19j 
+      - admin-password=123

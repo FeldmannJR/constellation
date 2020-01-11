@@ -1,9 +1,25 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: jenkins-deployment
-  namespace: jenkins
+  name: jenkins-master
 spec:
+  type: ClusterIP
+  selector:
+    app: jenkins-master
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: jnlp
+    port: 50000
+    targetPort: 50000
+--- 
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jenkins-master
+spec:
+  serviceName: 'jenkins'
   replicas: 1
   selector:
     matchLabels:
@@ -20,7 +36,9 @@ spec:
         imagePullPolicy: Always
         env:
           - name: JAVA_OPTS
-            value: -Djenkins.install.runSetupWizard=false
+            value: "-Djenkins.install.runSetupWizard=false"
+          - name: nexus-secrets
+            value: "/run/secrets"
         ports:
           - name: http-port
             containerPort: 8080
@@ -29,36 +47,30 @@ spec:
         volumeMounts:
           - mountPath: /var/jenkins_home 
             name: jenkins-storage
+          - mountPath: /run/secrets/deployer-password
+            name: nexus-secrets
+            subPath: deployer-password
+            readOnly: true
+      volumes:
+        - name: nexus-secrets
+          secret:
+              secretName: nexus-secrets 
       securityContext:
         fsGroup: 1000
-      volumes:
-        - name: jenkins-storage
-          persistentVolumeClaim:
-            claimName: jenkins-pv-claim
+  volumeClaimTemplates:
+  - metadata:
+      name: jenkins-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
 
---- 
-apiVersion: v1
-kind: Service
-metadata:
-  name: jenkins-master
-  namespace: jenkins
-spec:
-  type: ClusterIP
-  selector:
-    app: jenkins-master
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
-  - name: jnlp
-    port: 50000
-    targetPort: 50000
 --- 
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: jenkins-ingress
-  namespace: jenkins
 spec:
   rules:
     - host: jenkins.minikube

@@ -12,6 +12,8 @@ RUN /usr/local/bin/install-plugins.sh blueocean
 RUN /usr/local/bin/install-plugins.sh kubernetes
 # Dependencies of JCASC
 RUN /usr/local/bin/install-plugins.sh job-dsl workflow-job  workflow-aggregator workflow-cps
+# Config
+RUN /usr/local/bin/install-plugins.sh config-file-provider
 
 COPY .docker/jenkins-config.yaml /cfg/jenkins.yaml
 

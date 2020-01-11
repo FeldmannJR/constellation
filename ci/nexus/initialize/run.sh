@@ -37,6 +37,6 @@ function addAndRunScript {
 printf "Provisioning Integration API Scripts Starting \n\n"
 printf "Publishing and executing on $host\n"
 
-addAndRunScript initialize src/main/groovy/initialize.groovy
+addAndRunScript repositories src/main/groovy/repositories.groovy
 
 printf "\nProvisioning Scripts Completed\n\n"
