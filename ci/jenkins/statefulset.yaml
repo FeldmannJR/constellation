@@ -32,7 +32,7 @@ spec:
       serviceAccountName: jenkins
       containers:
       - name: jenkins
-        image: localhost:5000/constellation/jenkins-master
+        image: docker.nexus.minikube/constellation/jenkins-master
         imagePullPolicy: Always
         env:
           - name: JAVA_OPTS
@@ -83,6 +83,7 @@ spec:
       name: jenkins-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
       resources:
         requests:
           storage: 2Gi

@@ -18,6 +18,7 @@ security.addRole(
                 'nx-repository-view-*-*-read',
                 'nx-repository-view-*-*-browse',
                 'nx-repository-view-docker-*-add',
+                'nx-repository-view-docker-*-edit',
                 
         ],
         ['nx-anonymous']

@@ -28,9 +28,14 @@ address=/.minikube/192.168.39.54
 ``minikube addons enable ingress``
 
 #### Registry
-``minikube addons enable registry``  
-Before starting to deploying images to the registry, you need to allow unsecure registries in your machine.  
+Before starting to deploying images to the registry, you need to allow the `docker.nexus.minikube` unsecure registry in your machine.  
 More information can be found [here](https://minikube.sigs.k8s.io/docs/tasks/docker_registry/).
+You also need to login with the default credentials
+```bash
+# Username: developer
+# Password: 123
+docker login docker.nexus.minikube
+```
 
 ## Components
 
@@ -39,10 +44,14 @@ More information can be found [here](https://minikube.sigs.k8s.io/docs/tasks/doc
 # You can create the resources with
 cd /ci
 kubectl apply -k .
+# Then you need to provide the registry auth secret to the default service account
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "regcred"}]}'
 ```
 ### Jenkins `ci/jenkins`
 I am using the jenkins kubernetes plugins, when a job is dispatched the plugin create automatically a pod to run it.   
 The configuration is done through the Configuration as Code Plugin  
+
+You have to push the docker image before creating the statefulset, just execute the `pushImage.sh` script.
 
 #### Access
 * URL: http://jenkins.minikube

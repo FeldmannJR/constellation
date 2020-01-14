@@ -19,7 +19,7 @@ secretGenerator:
     literals: 
       - deployer-password=j9uj19j 
       - admin-password=123
-      - k8s-password=sxdcfvgbhnjkml
+      - k8s-password=12345
       - developer-password=123
   - name: jenkins-secrets
     literals:

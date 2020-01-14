@@ -24,7 +24,7 @@ jenkins:
       containerCapStr: "10"
       skipTlsVerify: true
       namespace: "default"
-      jenkinsUrl: "http://jenkins-master.ci.svc.cluster.local"
+      jenkinsUrl: "http://jenkins-master.default.svc.cluster.local"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
       templates:
