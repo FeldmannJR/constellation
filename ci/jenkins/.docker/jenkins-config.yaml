@@ -1,3 +1,12 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          id: "repository-credential"
+          password: "${DEPLOYER_PASSWORD}"
+          scope: GLOBAL
+          username: "jenkins-deployer"
 jenkins:
   numExecutors: 0
   clouds:
@@ -52,3 +61,24 @@ jobs:
               }
           }
       }
+unclassified:
+  globalConfigFiles:
+    configs:
+    - globalMavenSettings:
+        comment: "Global settings"
+        content: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<settings xmlns=\"\
+          http://maven.apache.org/SETTINGS/1.0.0\" \n          xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
+          \ \n          xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0\
+          \ http://maven.apache.org/xsd/settings-1.0.0.xsd\">\n\n</settings>\n"
+        id: "maven-settings"
+        isReplaceAll: true
+        name: "Global MavenSettings"
+        providerId: "org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig"
+        serverCredentialMappings:
+        - credentialsId: "repository-credential"
+          serverId: "constellation-repository"
+tool:
+  maven:
+    globalSettingsProvider:
+      mvn: 
+        settingsConfigId: "maven-settings"

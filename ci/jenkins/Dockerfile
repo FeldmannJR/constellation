@@ -14,6 +14,7 @@ RUN /usr/local/bin/install-plugins.sh kubernetes
 RUN /usr/local/bin/install-plugins.sh job-dsl workflow-job  workflow-aggregator workflow-cps
 # Config
 RUN /usr/local/bin/install-plugins.sh config-file-provider
+RUN /usr/local/bin/install-plugins.sh pipeline-maven
 
 COPY .docker/jenkins-config.yaml /cfg/jenkins.yaml
 

@@ -37,7 +37,7 @@ spec:
         env:
           - name: JAVA_OPTS
             value: "-Djenkins.install.runSetupWizard=false"
-          - name: nexus-secrets
+          - name: SECRETS
             value: "/run/secrets"
         ports:
           - name: http-port
@@ -47,7 +47,7 @@ spec:
         volumeMounts:
           - mountPath: /var/jenkins_home 
             name: jenkins-storage
-          - mountPath: /run/secrets/deployer-password
+          - mountPath: /run/secrets/DEPLOYER_PASSWORD
             name: nexus-secrets
             subPath: deployer-password
             readOnly: true
