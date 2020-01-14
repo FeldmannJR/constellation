@@ -37,21 +37,34 @@ spec:
         env:
           - name: JAVA_OPTS
             value: "-Djenkins.install.runSetupWizard=false"
+            #
           - name: SECRETS
             value: "/run/secrets"
+            #
+          - name: CASC_JENKINS_CONFIG
+            value: "/cfg/jenkins.yaml"
         ports:
           - name: http-port
             containerPort: 8080
           - name: jnlt-port
             containerPort: 50000
         volumeMounts:
-          - mountPath: /var/jenkins_home 
-            name: jenkins-storage
-          - mountPath: /run/secrets/DEPLOYER_PASSWORD
-            name: nexus-secrets
+          - name: jenkins-storage
+            mountPath: /var/jenkins_home
+          #
+          - name: jenkins-config
+            mountPath: /cfg/jenkins.yaml
+            subPath: jenkins-config.yaml 
+            readOnly: true
+          #
+          - name: nexus-secrets
+            mountPath: /run/secrets/DEPLOYER_PASSWORD
             subPath: deployer-password
             readOnly: true
       volumes:
+        - name: jenkins-config
+          configMap:
+              name: 'jenkins-config'
         - name: nexus-secrets
           secret:
               secretName: nexus-secrets 

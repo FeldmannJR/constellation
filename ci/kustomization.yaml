@@ -11,8 +11,12 @@ configMapGenerator:
     files:
       - nexus/initialize/src/main/groovy/repositories.groovy
       - nexus/initialize/src/main/groovy/security.groovy
+  - name: 'jenkins-config'
+    files:
+      - jenkins/config/jenkins-config.yaml
 secretGenerator:
   - name: nexus-secrets
     literals: 
       - deployer-password=j9uj19j 
       - admin-password=123
+      - jenkins-admin-password=123
