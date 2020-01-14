@@ -16,5 +16,3 @@ RUN /usr/local/bin/install-plugins.sh job-dsl workflow-job workflow-aggregator w
 RUN /usr/local/bin/install-plugins.sh config-file-provider
 # Pipeline
 RUN /usr/local/bin/install-plugins.sh pipeline-maven
-# Authentication
-RUN /usr/local/bin/install-plugins.sh matrix-auth

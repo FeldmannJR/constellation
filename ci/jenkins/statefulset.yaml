@@ -61,6 +61,11 @@ spec:
             mountPath: /run/secrets/DEPLOYER_PASSWORD
             subPath: deployer-password
             readOnly: true
+          #
+          - name: jenkins-secrets
+            mountPath: /run/secrets/JENKINS_ADMIN_PASSWORD
+            subPath: jenkins-admin-password
+            readOnly: true
       volumes:
         - name: jenkins-config
           configMap:
@@ -68,6 +73,9 @@ spec:
         - name: nexus-secrets
           secret:
               secretName: nexus-secrets 
+        - name: jenkins-secrets
+          secret:
+              secretName: jenkins-secrets 
       securityContext:
         fsGroup: 1000
   volumeClaimTemplates:

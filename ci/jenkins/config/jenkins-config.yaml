@@ -9,6 +9,15 @@ credentials:
           username: "jenkins-deployer"
 jenkins:
   numExecutors: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
   clouds:
   - kubernetes:
       name: 'kubernetes'
@@ -40,6 +49,9 @@ jenkins:
                     claimName: maven-cache-pv-claim
         yamlMergeStrategy: "override"
 unclassified:
+  location:
+    adminAddress: "feldmannjunior@gmail.com"
+    url: "http://jenkins.minikube/"
   globalConfigFiles:
     configs:
     - globalMavenSettings:

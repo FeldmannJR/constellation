@@ -19,4 +19,6 @@ secretGenerator:
     literals: 
       - deployer-password=j9uj19j 
       - admin-password=123
+  - name: jenkins-secrets
+    literals:
       - jenkins-admin-password=123
