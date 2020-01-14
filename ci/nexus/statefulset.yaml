@@ -50,6 +50,16 @@ spec:
               secretKeyRef:
                 name: nexus-secrets
                 key: deployer-password
+          - name: NEXUS_K8S_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: nexus-secrets
+                key: k8s-password
+          - name: NEXUS_DEVELOPER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: nexus-secrets
+                key: developer-password
         ports:
           - name: http-port
             containerPort: 8081

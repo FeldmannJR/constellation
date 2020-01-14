@@ -1,3 +1,6 @@
 [submodule "common"]
 	path = common
 	url = git@github.com:FeldmannJR/constellation-common.git
+[submodule "parent-pom"]
+	path = parent-pom
+	url = git@github.com:feldmannjr/constellation-parent-pom.git

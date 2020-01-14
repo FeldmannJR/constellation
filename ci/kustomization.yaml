@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: ci
 resources:
+  - regcred.yaml
   - nexus/statefulset.yaml
   - jenkins/maven-cache-pvc.yaml
   - jenkins/service-account.yaml
@@ -19,6 +19,8 @@ secretGenerator:
     literals: 
       - deployer-password=j9uj19j 
       - admin-password=123
+      - k8s-password=sxdcfvgbhnjkml
+      - developer-password=123
   - name: jenkins-secrets
     literals:
       - jenkins-admin-password=123

@@ -23,14 +23,14 @@ jenkins:
       name: 'kubernetes'
       containerCapStr: "10"
       skipTlsVerify: true
-      namespace: "ci"
+      namespace: "default"
       jenkinsUrl: "http://jenkins-master.ci.svc.cluster.local"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
       templates:
       - hostNetwork: false
         name: "mavenTemplate"
-        namespace: "ci"
+        namespace: "default"
         yaml: |-
           apiVersion: v1
           kind: Pod
@@ -75,7 +75,7 @@ tool:
 # Creating jobs
 jobs:
   - script: >
-      for(it in ['constellation-common']) {
+      for(it in ['constellation-parent-pom','constellation-common']) {
           /*why am i concatenating strings like that? because the plugin is replacing the variables before processing the groovy script, so i'm unable to just use string interpolation pos*/
           def repoURL = 'https://github.com/FeldmannJR/'
           repoURL = repoURL.concat(it)
