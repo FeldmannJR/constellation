@@ -40,10 +40,21 @@ More information can be found [here](https://minikube.sigs.k8s.io/docs/tasks/doc
 cd /ci
 kubectl apply -k .
 ```
-#### ci/jenkins/
+### Jenkins `ci/jenkins`
 I am using the jenkins kubernetes plugins, when a job is dispatched the plugin create automatically a pod to run it.   
-The configuration is done through the Configuration as Code Plugin
-#### ci/nexus/
+The configuration is done through the Configuration as Code Plugin  
+
+#### Access
+* URL: http://jenkins.minikube
+* User: admin
+* Password: 123
+
+### Nexus `ci/nexus`
 Maven repository to store artifacts, the configuration is done automatically through groovy scripts.  
 Using my own nexus3 image, that can be found [HERE](https://github.com/FeldmannJR/nexus3-docker-image).
+
+#### Access
+* URL: http://nexus.minikube
+* User: admin
+* Password: 123
 
