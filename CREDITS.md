@@ -8,3 +8,6 @@
 * https://blog.sonatype.com/automated-setup-of-a-repository-manager
 * https://www.edc4it.com/blog/java/minikube-nexus-statefulset-ingress
 # Stackoverflow
+
+# Java
+https://www.vogella.com/tutorials/JUnit/article.html#testingterminology
